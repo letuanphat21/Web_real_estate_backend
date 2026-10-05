@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: datvietgroup
+  profiles:
+    active:
+    - dev
