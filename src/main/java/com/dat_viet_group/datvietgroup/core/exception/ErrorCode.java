@@ -25,7 +25,10 @@ public enum ErrorCode {
     // --- NGƯỜI DÙNG (USER) ---
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy người dùng"),
     EMAIL_EXISTED(HttpStatus.BAD_REQUEST, "Email này đã được sử dụng trên hệ thống"),
-    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "Mật khẩu không chính xác");
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "Mật khẩu không chính xác"),
+    USER_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "Tài khoản chưa được kích hoạt"),
+    USER_DELETED(HttpStatus.BAD_REQUEST, "Tài khoản đã bị admin khóa"),
+    PHONE_EXISTED(HttpStatus.BAD_REQUEST, "Số điện thoại này đã được sử dụng trên hệ thống");
 
     private final HttpStatus status;
     private final String messageTemplate;

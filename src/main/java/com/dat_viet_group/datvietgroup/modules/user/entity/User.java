@@ -1,5 +1,6 @@
 package com.dat_viet_group.datvietgroup.modules.user.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -36,8 +37,22 @@ public class User {
     @Column(name = "avatar_url", length = 255)
     private String avatarUrl;
 
+
+    @Column (name = "active_code", length = 100)
+    private String activeCode;
+
+    @Column (name = "expired_time")
+    private LocalDateTime expiredTime;
+
+
     @Column(name = "is_active")
     private boolean isActive;
+
+    @Column (name = "is_deleted")
+    private boolean isDeleted;
+
+    @Column (name = "created_at")
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")

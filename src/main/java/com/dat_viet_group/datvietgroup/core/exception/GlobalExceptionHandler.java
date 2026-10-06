@@ -15,6 +15,11 @@ public class GlobalExceptionHandler {
         return ApiResponse.error(ErrorCode.UNCATEGORIZED_EXCEPTION, ex.getMessage());
     }
 
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponse<Void>> handleAppException(AppException ex) {
+        return ApiResponse.error(ex.getErrorCode(), ex.getMessage());
+    }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         String errorMessage = ex.getFieldError() != null ? ex.getFieldError().getDefaultMessage()
@@ -26,5 +31,6 @@ public class GlobalExceptionHandler {
     ResponseEntity<ApiResponse<Void>> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         return ApiResponse.error(ErrorCode.USER_NOT_FOUND, ex.getMessage());
     }
+    
 
 }

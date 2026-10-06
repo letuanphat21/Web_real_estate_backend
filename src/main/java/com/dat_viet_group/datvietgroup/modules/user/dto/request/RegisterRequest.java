@@ -1,5 +1,6 @@
 package com.dat_viet_group.datvietgroup.modules.user.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -10,8 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterRequest {
-    @NotBlank(message = "Tên người dùng không được để trống")
-    private String username;
+    @NotBlank(message = "Email không được để trống")
+    @Email(message = "Email không hợp lệ")
+    private String email;
 
     @NotBlank(message = "Mật khẩu không được để trống")
     @Pattern (regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "Mật khẩu tối thiểu 8 ký tự, ít nhất một chữ cái và một số")
@@ -19,4 +21,11 @@ public class RegisterRequest {
 
     @NotBlank(message = "Xác nhận mật khẩu không được để trống")
     private String confirmPassword;
+
+    @NotBlank(message = "Họ và tên không được để trống")
+    private String fullName;
+
+    @NotBlank (message = "Số điện thoại không được để trống")
+    @Pattern (regexp = "^(0?)(3[2-9]|5[6|7|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$", message = "Số điện thoại không hợp lệ")
+    private String phone;
 }
