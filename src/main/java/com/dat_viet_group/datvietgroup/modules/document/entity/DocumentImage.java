@@ -1,9 +1,10 @@
-package com.dat_viet_group.datvietgroup.modules.project.entity;
+package com.dat_viet_group.datvietgroup.modules.document.entity;
 
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,40 +19,25 @@ import lombok.ToString;
 
 @Data
 @Entity
-@Table(name = "news")
+@Table(name = "document_images")
 @NoArgsConstructor
 @AllArgsConstructor
-public class News {
+public class DocumentImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "user_id", nullable = false)
-    private long userId;
-
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "document_id", nullable = false)
+    private Document document;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @ManyToOne
-    @JoinColumn(name = "category_new_id", nullable = false)
-    private CategoryNew categoryNew;
-
-    @Column(name = "title", length = 255)
-    private String title;
-
-    @Column(name = "content", columnDefinition = "text")
-    private String content;
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Column(name = "active")
-    private boolean active;
 }
