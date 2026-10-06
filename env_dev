@@ -1,3 +1,3 @@
-DEV_DB_URL=jdbc:postgresql://localhost:5432/datviet_dev_db
+DEV_DB_URL=jdbc:postgresql://localhost:5433/datviet_dev_db
 DEV_DB_USERNAME=postgres
-DEV_DB_PASSWORD=kolothefourth4$
+DEV_DB_PASSWORD=Vubui096@
