@@ -1,8 +1,8 @@
 spring:
     datasource:
-        url: ${DEV_DB_URL}
-        username: ${DEV_DB_USERNAME}
-        password: ${DEV_DB_PASSWORD}
+        url: jdbc:postgresql://localhost:5432/datviet_dev_db
+        username: postgres
+        password: kolothefourth4$
         driver-class-name: org.postgresql.Driver
 
     jpa:
