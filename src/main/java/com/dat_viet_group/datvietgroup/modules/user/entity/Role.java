@@ -5,9 +5,12 @@ import java.util.List;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "role")
 @NoArgsConstructor
@@ -28,6 +31,8 @@ public class Role {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
+            CascadeType.REFRESH,
+            CascadeType.DETACH })
     private List<User> users;
 }
