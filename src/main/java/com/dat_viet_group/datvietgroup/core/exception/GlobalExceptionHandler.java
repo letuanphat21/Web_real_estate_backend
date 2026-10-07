@@ -1,12 +1,18 @@
 package com.dat_viet_group.datvietgroup.core.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.dat_viet_group.datvietgroup.core.common.ApiResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -31,6 +37,27 @@ public class GlobalExceptionHandler {
     ResponseEntity<ApiResponse<Void>> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         return ApiResponse.error(ErrorCode.USER_NOT_FOUND, ex.getMessage());
     }
-    
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    ResponseEntity<ApiResponse<Void>> handleAuthenticationException(AuthenticationException ex) {
+        // Client chỉ thấy thông báo chung, nguyên nhân thật chỉ ghi vào log
+        log.warn("Xác thực thất bại: {} - {}", ex.getClass().getSimpleName(), ex.getMessage());
+        // DaoAuthenticationProvider bọc mọi exception khác UsernameNotFoundException (vd AppException
+        // từ loadUserByUsername) vào InternalAuthenticationServiceException, cần bóc ra lại
+        if (ex.getCause() instanceof AppException appException) {
+            return handleAppException(appException);
+        }
+        return ApiResponse.error(ErrorCode.INVALID_CREDENTIALS);
+    }
+
+    @ExceptionHandler(value = ExpiredJwtException.class)
+    ResponseEntity<ApiResponse<Void>> handleExpiredJwtException(ExpiredJwtException ex) {
+        return ApiResponse.error(ErrorCode.TOKEN_EXPIRED);
+    }
+
+    @ExceptionHandler(value = JwtException.class)
+    ResponseEntity<ApiResponse<Void>> handleJwtException(JwtException ex) {
+        return ApiResponse.error(ErrorCode.TOKEN_INVALID);
+    }
 
 }

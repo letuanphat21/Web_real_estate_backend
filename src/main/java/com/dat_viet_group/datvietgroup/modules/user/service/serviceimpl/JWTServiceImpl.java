@@ -1,8 +1,6 @@
 package com.dat_viet_group.datvietgroup.modules.user.service.serviceimpl;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Optional;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
@@ -75,7 +73,7 @@ public class JWTServiceImpl implements JWTService{
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload();
     }
 
     @Override
@@ -96,15 +94,15 @@ public class JWTServiceImpl implements JWTService{
 
     @Override
     public Boolean validateToken(String token, UserDetails userDetails) {
+        // Chỉ access token mới được dùng để gọi API, refresh token bị từ chối
+        if (!"access".equals(extractClaim(token, claims -> claims.get("type", String.class)))) {
+            throw new io.jsonwebtoken.JwtException("Token không phải access token");
+        }
+        // Hạn token đã được parser kiểm tra (ném ExpiredJwtException) khi đọc claims
         Long userId = extractUserId(token);
         User user = userService.findById(userId);
         String username = userDetails.getUsername();
-        boolean sameUser = username.equals(user.getEmail()) || username.equals(user.getPhone());
-        return sameUser && !isTokenExpired(token);
-    }
-
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return username.equals(user.getEmail()) || username.equals(user.getPhone());
     }
 
     @Override

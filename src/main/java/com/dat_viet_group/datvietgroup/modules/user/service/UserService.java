@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.dat_viet_group.datvietgroup.modules.user.dto.request.LoginRequest;
 import com.dat_viet_group.datvietgroup.modules.user.dto.request.RegisterRequest;
+import com.dat_viet_group.datvietgroup.modules.user.dto.response.JwtAuthResponse;
 import com.dat_viet_group.datvietgroup.modules.user.entity.User;
 
 
@@ -24,4 +26,5 @@ public interface UserService extends UserDetailsService {
 
     User findById(Long id);
 
+   
 }

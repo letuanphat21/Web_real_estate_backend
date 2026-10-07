@@ -19,8 +19,9 @@ public enum ErrorCode {
     // --- XÁC THỰC & BẢO MẬT (AUTH / JWT) ---
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Bạn cần đăng nhập để thực hiện hành động này"),
     FORBIDDEN(HttpStatus.FORBIDDEN, "Bạn không có quyền truy cập vào tài nguyên này"),
-    TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "Mã Token đã hết hạn"),
-    TOKEN_INVALID(HttpStatus.BAD_REQUEST, "Mã Token không hợp lệ"),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Mã Token đã hết hạn"),
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Tài khoản hoặc mật khẩu không chính xác"),
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "Mã Token không hợp lệ"),
 
     // --- NGƯỜI DÙNG (USER) ---
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy người dùng"),
