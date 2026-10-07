@@ -10,7 +10,8 @@ public class Endpoints {
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
-            "/api/users/register"
+            "/api/users/register",
+            "/api/users/login",
     };
 
     public static final String[] PRIVATE_GET_ENDPOINT = new String[] {
@@ -22,6 +23,12 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINT = new String[] {
+    };
+
+    public static final String[] ADMIN_PUT_ENDPOINTS = new String[] {
+    };
+
+    public static final String[] ADMIN_GET_ENDPOINTS = new String[] {
     };
 
 }
