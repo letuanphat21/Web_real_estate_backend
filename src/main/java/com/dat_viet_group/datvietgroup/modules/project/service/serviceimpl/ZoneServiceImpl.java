@@ -4,7 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dat_viet_group.datvietgroup.core.cloudinary.service.CloudinaryService;
 import com.dat_viet_group.datvietgroup.core.exception.AppException;
 import com.dat_viet_group.datvietgroup.core.exception.ErrorCode;
 import com.dat_viet_group.datvietgroup.modules.project.dao.ProjectRepository;
@@ -21,15 +23,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ZoneServiceImpl implements ZoneService {
 
+    private static final String IMAGE_FOLDER = "zones";
+
     private final ZoneRepository zoneRepository;
     private final ProjectRepository projectRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     @Transactional
-    public ZoneResponse create(ZoneRequest request) {
+    public ZoneResponse create(ZoneRequest request, MultipartFile image) {
         Zone zone = new Zone();
         applyRequest(zone, request);
-        return toResponse(zoneRepository.save(zone));
+
+        String newUrl = hasFile(image) ? cloudinaryService.uploadImage(image, IMAGE_FOLDER) : null;
+        zone.setImageUrl(newUrl);
+        try {
+            return toResponse(zoneRepository.save(zone));
+        } catch (RuntimeException e) {
+            // Lưu DB lỗi thì xóa ảnh vừa upload để không bị rác trên Cloudinary
+            cloudinaryService.deleteByUrl(newUrl);
+            throw e;
+        }
     }
 
     @Override
@@ -49,16 +63,40 @@ public class ZoneServiceImpl implements ZoneService {
 
     @Override
     @Transactional
-    public ZoneResponse update(Long id, ZoneRequest request) {
+    public ZoneResponse update(Long id, ZoneRequest request, MultipartFile image) {
         Zone zone = findOrThrow(id);
         applyRequest(zone, request);
-        return toResponse(zoneRepository.save(zone));
+
+        // Không gửi ảnh mới thì giữ ảnh cũ
+        String oldUrl = zone.getImageUrl();
+        String newUrl = hasFile(image) ? cloudinaryService.uploadImage(image, IMAGE_FOLDER) : null;
+        if (newUrl != null) {
+            zone.setImageUrl(newUrl);
+        }
+        try {
+            ZoneResponse response = toResponse(zoneRepository.save(zone));
+            if (newUrl != null) {
+                cloudinaryService.deleteByUrl(oldUrl);
+            }
+            return response;
+        } catch (RuntimeException e) {
+            cloudinaryService.deleteByUrl(newUrl);
+            throw e;
+        }
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        zoneRepository.delete(findOrThrow(id));
+        Zone zone = findOrThrow(id);
+        zoneRepository.delete(zone);
+        // flush để lỗi ràng buộc khóa ngoại nổ ra trước khi xóa ảnh trên Cloudinary
+        zoneRepository.flush();
+        cloudinaryService.deleteByUrl(zone.getImageUrl());
+    }
+
+    private boolean hasFile(MultipartFile file) {
+        return file != null && !file.isEmpty();
     }
 
     private Zone findOrThrow(Long id) {
@@ -74,7 +112,6 @@ public class ZoneServiceImpl implements ZoneService {
         zone.setName(request.getName());
         zone.setDescription(request.getDescription());
         zone.setStatus(request.getStatus());
-        zone.setImageUrl(request.getImageUrl());
     }
 
     private ZoneResponse toResponse(Zone zone) {

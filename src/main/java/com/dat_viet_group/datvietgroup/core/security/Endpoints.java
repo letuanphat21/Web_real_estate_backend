@@ -17,6 +17,10 @@ public class Endpoints {
             "/api/projects/*",                  // chi tiết dự án
             "/api/zones",                       // danh sách phân khu (?projectId=&page=&size=)
             "/api/zones/*",                     // chi tiết phân khu
+            "/api/properties",                  // danh sách bất động sản (?zoneId=&status=&page=&size=)
+            "/api/properties/*",                // chi tiết bất động sản
+            "/api/questions",                   // danh sách câu hỏi của dự án (?projectId=&page=&size=)
+            "/api/questions/*",                 // chi tiết câu hỏi
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {

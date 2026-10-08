@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import com.dat_viet_group.datvietgroup.core.common.ApiResponse;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -40,6 +41,12 @@ public class GlobalExceptionHandler {
         // Chi tiết parse chỉ ghi vào log, client chỉ thấy thông báo chung
         log.warn("Request body không đọc được: {}", ex.getMessage());
         return ApiResponse.error(ErrorCode.INVALID_INPUT_FORMAT);
+    }
+
+    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+    ResponseEntity<ApiResponse<Void>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        // Tham số URL sai kiểu (vd status không thuộc enum, id không phải số)
+        return ApiResponse.error(ErrorCode.INVALID_INPUT_FORMAT, "Giá trị tham số '" + ex.getName() + "' không hợp lệ");
     }
 
     @ExceptionHandler(value = DataIntegrityViolationException.class)

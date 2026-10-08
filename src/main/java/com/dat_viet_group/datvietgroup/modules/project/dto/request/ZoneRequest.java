@@ -23,6 +23,4 @@ public class ZoneRequest {
     private String description;
 
     private ZoneStatus status;
-
-    private String imageUrl;
 }

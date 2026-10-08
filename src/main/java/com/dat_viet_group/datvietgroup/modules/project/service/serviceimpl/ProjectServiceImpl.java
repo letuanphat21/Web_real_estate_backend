@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dat_viet_group.datvietgroup.core.cloudinary.service.CloudinaryService;
 import com.dat_viet_group.datvietgroup.core.exception.AppException;
 import com.dat_viet_group.datvietgroup.core.exception.ErrorCode;
 import com.dat_viet_group.datvietgroup.modules.project.dao.ProjectRepository;
@@ -21,15 +23,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
+    private static final String IMAGE_FOLDER = "projects";
+
     private final ProjectRepository projectRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     @Transactional
-    public ProjectResponse create(ProjectRequest request) {
+    public ProjectResponse create(ProjectRequest request, MultipartFile image) {
         Project project = new Project();
         applyRequest(project, request);
         project.setCreatedAt(LocalDateTime.now());
-        return toResponse(projectRepository.save(project));
+
+        String newUrl = hasFile(image) ? cloudinaryService.uploadImage(image, IMAGE_FOLDER) : null;
+        project.setOverviewImage(newUrl);
+        try {
+            return toResponse(projectRepository.save(project));
+        } catch (RuntimeException e) {
+            // Lưu DB lỗi thì xóa ảnh vừa upload để không bị rác trên Cloudinary
+            cloudinaryService.deleteByUrl(newUrl);
+            throw e;
+        }
     }
 
     @Override
@@ -46,16 +60,40 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectResponse update(Long id, ProjectRequest request) {
+    public ProjectResponse update(Long id, ProjectRequest request, MultipartFile image) {
         Project project = findOrThrow(id);
         applyRequest(project, request);
-        return toResponse(projectRepository.save(project));
+
+        // Không gửi ảnh mới thì giữ ảnh cũ
+        String oldUrl = project.getOverviewImage();
+        String newUrl = hasFile(image) ? cloudinaryService.uploadImage(image, IMAGE_FOLDER) : null;
+        if (newUrl != null) {
+            project.setOverviewImage(newUrl);
+        }
+        try {
+            ProjectResponse response = toResponse(projectRepository.save(project));
+            if (newUrl != null) {
+                cloudinaryService.deleteByUrl(oldUrl);
+            }
+            return response;
+        } catch (RuntimeException e) {
+            cloudinaryService.deleteByUrl(newUrl);
+            throw e;
+        }
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        projectRepository.delete(findOrThrow(id));
+        Project project = findOrThrow(id);
+        projectRepository.delete(project);
+        // flush để lỗi ràng buộc khóa ngoại nổ ra trước khi xóa ảnh trên Cloudinary
+        projectRepository.flush();
+        cloudinaryService.deleteByUrl(project.getOverviewImage());
+    }
+
+    private boolean hasFile(MultipartFile file) {
+        return file != null && !file.isEmpty();
     }
 
     private Project findOrThrow(Long id) {
@@ -65,7 +103,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     private void applyRequest(Project project, ProjectRequest request) {
         project.setName(request.getName());
-        project.setOverviewImage(request.getOverviewImage());
         project.setLocation(request.getLocation());
         project.setInvestor(request.getInvestor());
         project.setConsultancy(request.getConsultancy());
