@@ -23,6 +23,8 @@ public enum ErrorCode {
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Mã Token đã hết hạn"),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Tài khoản hoặc mật khẩu không chính xác"),
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "Mã Token không hợp lệ"),
+    TOKEN_REFRESH_INVALID(HttpStatus.UNAUTHORIZED, "Mã Refresh Token không hợp lệ"),
+    TOKEN_REFRESH_EXPIRED(HttpStatus.UNAUTHORIZED, "Mã Refresh Token đã hết hạn"),
 
     // --- NGƯỜI DÙNG (USER) ---
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy người dùng"),
