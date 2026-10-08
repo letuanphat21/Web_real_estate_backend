@@ -26,6 +26,8 @@ public class Endpoints {
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
             "/api/users/register",
             "/api/users/login",
+            "/api/users/refresh-token",
+            "/api/users/logout",
             "/api/test/cloudinary/**", 
     };
 

@@ -1,6 +1,7 @@
 package com.dat_viet_group.datvietgroup.modules.user.service.serviceimpl;
 
 import java.util.Date;
+import java.util.UUID;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
@@ -43,6 +44,7 @@ public class JWTServiceImpl implements JWTService{
         return Jwts.builder()
                 .subject(emailOrPhone)
                 .claim("userId", user.getId())
+                .claim("avatar", user.getAvatarUrl())
                 .claim("role", user.getRole().getName())
                 .claim("type", "access")
                 .issuedAt(now)
@@ -62,6 +64,7 @@ public class JWTServiceImpl implements JWTService{
         Date now = new Date();
 
         return Jwts.builder()
+                .id(UUID.randomUUID().toString())
                 .subject(emailOrPhone)
                 .claim("userId", user.getId())
                 .claim("role", user.getRole().getName())
@@ -106,8 +109,26 @@ public class JWTServiceImpl implements JWTService{
     }
 
     @Override
+    public String extractJti(String token) {
+        return extractClaim(token, Claims::getId);
+    }
+
+    @Override 
     public Long extractUserId(String token) {
         return extractClaim(token, claims -> claims.get("userId", Long.class));
+    }
+
+    @Override
+    public boolean validateRefreshToken(String refreshToken, UserDetails userDetails) {
+        // Chỉ refresh token mới được dùng để làm mới access token, access token bị từ chối
+        if (!"refresh".equals(extractClaim(refreshToken, claims -> claims.get("type", String.class)))) {
+            throw new io.jsonwebtoken.JwtException("Token không phải refresh token");
+        }
+        // Hạn token đã được parser kiểm tra (ném ExpiredJwtException) khi đọc claims
+        Long userId = extractUserId(refreshToken);
+        User user = userService.findById(userId);
+        String username = userDetails.getUsername();
+        return username.equals(user.getEmail()) || username.equals(user.getPhone());
     }
     
 }
