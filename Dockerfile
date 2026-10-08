@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.m2 \
 # Stage 2: Extract layers (for better caching)
 FROM build AS extract
 WORKDIR /build
-RUN java -Djarmode=layertools -jar target/app.jar extract --destination target/extracted
+RUN java -Djarmode=tools -jar target/app.jar extract --layers --destination target/extracted
 
 # Stage 3: Runtime (JRE only)
 FROM eclipse-temurin:21-jre-alpine AS runtime
@@ -31,4 +31,4 @@ COPY --from=extract build/target/extracted/snapshot-dependencies/ ./
 COPY --from=extract build/target/extracted/application/ ./
 
 EXPOSE 8080
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
