@@ -29,7 +29,13 @@ public enum ErrorCode {
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "Mật khẩu không chính xác"),
     USER_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "Tài khoản chưa được kích hoạt"),
     USER_DELETED(HttpStatus.BAD_REQUEST, "Tài khoản đã bị admin khóa"),
-    PHONE_EXISTED(HttpStatus.BAD_REQUEST, "Số điện thoại này đã được sử dụng trên hệ thống");
+    PHONE_EXISTED(HttpStatus.BAD_REQUEST, "Số điện thoại này đã được sử dụng trên hệ thống"),
+
+    // --- UPLOAD ẢNH (CLOUDINARY) ---
+    FILE_EMPTY(HttpStatus.BAD_REQUEST, "Chưa chọn ảnh hoặc file rỗng"),
+    FILE_INVALID_TYPE(HttpStatus.BAD_REQUEST, "File không phải là ảnh hợp lệ"),
+    FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "Dung lượng ảnh vượt quá giới hạn cho phép"),
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Upload ảnh lên Cloudinary thất bại");
 
     private final HttpStatus status;
     private final String messageTemplate;

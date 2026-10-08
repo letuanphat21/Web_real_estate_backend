@@ -12,6 +12,7 @@ public class Endpoints {
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
             "/api/users/register",
             "/api/users/login",
+            "/api/test/cloudinary/**", // TODO: xóa sau khi test xong
     };
 
     public static final String[] PRIVATE_GET_ENDPOINT = new String[] {
@@ -19,7 +20,7 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_POST_ENDPOINT = new String[] {
-
+                
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINT = new String[] {

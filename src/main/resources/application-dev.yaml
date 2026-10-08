@@ -27,3 +27,6 @@ jwt:
     secret: ${DEV_JWT_SECRET}
     expiration: ${DEV_JWT_EXPIRATION}
     refresh-expiration: ${DEV_JWT_REFRESH_EXPIRATION}
+    
+cloudinary:
+  url: ${CLOUDINARY_URL}
