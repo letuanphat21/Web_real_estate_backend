@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -17,7 +18,8 @@ import lombok.AllArgsConstructor;
 @Getter
 @Setter
 @Entity
-@Table(name = "post_reaction")
+@Table(name = "post_reaction", uniqueConstraints = @UniqueConstraint(name = "uk_post_reaction_post_user", columnNames = {
+        "post_id", "user_id" }))
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostReaction {

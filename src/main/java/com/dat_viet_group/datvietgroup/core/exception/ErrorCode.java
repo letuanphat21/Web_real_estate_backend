@@ -35,7 +35,20 @@ public enum ErrorCode {
     FILE_EMPTY(HttpStatus.BAD_REQUEST, "Chưa chọn ảnh hoặc file rỗng"),
     FILE_INVALID_TYPE(HttpStatus.BAD_REQUEST, "File không phải là ảnh hợp lệ"),
     FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "Dung lượng ảnh vượt quá giới hạn cho phép"),
-    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Upload ảnh lên Cloudinary thất bại");
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Upload ảnh lên Cloudinary thất bại"),
+
+    // --- BÀI VIẾT (SOCIAL) ---
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bài viết"),
+    POST_EMPTY(HttpStatus.BAD_REQUEST, "Bài viết phải có nội dung hoặc ít nhất 1 ảnh"),
+    POST_TOO_MANY_IMAGES(HttpStatus.BAD_REQUEST, "Số lượng ảnh vượt quá giới hạn cho phép"),
+
+    // --- BÌNH LUẬN (SOCIAL) ---
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bình luận"),
+    COMMENT_EMPTY(HttpStatus.BAD_REQUEST, "Nội dung bình luận không được để trống"),
+    COMMENT_PARENT_INVALID(HttpStatus.BAD_REQUEST, "Bình luận cha không thuộc bài viết này"),
+
+    // --- THEO DÕI (SOCIAL) ---
+    FOLLOW_SELF(HttpStatus.BAD_REQUEST, "Bạn không thể tự theo dõi chính mình");
 
     private final HttpStatus status;
     private final String messageTemplate;
