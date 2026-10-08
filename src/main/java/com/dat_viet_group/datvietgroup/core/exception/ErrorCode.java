@@ -35,7 +35,18 @@ public enum ErrorCode {
     FILE_EMPTY(HttpStatus.BAD_REQUEST, "Chưa chọn ảnh hoặc file rỗng"),
     FILE_INVALID_TYPE(HttpStatus.BAD_REQUEST, "File không phải là ảnh hợp lệ"),
     FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "Dung lượng ảnh vượt quá giới hạn cho phép"),
-    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Upload ảnh lên Cloudinary thất bại");
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Upload ảnh lên Cloudinary thất bại"),
+
+    // --- SỰ KIỆN (EVENT) ---
+    EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy sự kiện"),
+    EVENT_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy ảnh của sự kiện"),
+    EVENT_INVALID_TIME(HttpStatus.BAD_REQUEST, "Thời gian kết thúc phải sau thời gian bắt đầu"),
+    EVENT_INVALID_MAX_ATTENDEES(HttpStatus.BAD_REQUEST, "Số người tối đa nhỏ hơn số người đã tham gia"),
+    EVENT_FULL(HttpStatus.BAD_REQUEST, "Sự kiện đã đủ số lượng người tham gia"),
+    EVENT_NOT_JOINABLE(HttpStatus.BAD_REQUEST, "Sự kiện đã kết thúc hoặc đã bị hủy"),
+    EVENT_ALREADY_JOINED(HttpStatus.BAD_REQUEST, "Bạn đã tham gia sự kiện này"),
+    EVENT_NOT_JOINED(HttpStatus.BAD_REQUEST, "Bạn chưa tham gia sự kiện này"),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bình luận");
 
     private final HttpStatus status;
     private final String messageTemplate;

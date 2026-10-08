@@ -7,12 +7,14 @@ public class Endpoints {
             "http://localhost:5173");
 
     public static final String[] PUBLIC_GET_ENDPOINTS = new String[] {
+            "/api/events",  
+            "/api/events/**",
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
             "/api/users/register",
             "/api/users/login",
-            "/api/test/cloudinary/**", // TODO: xóa sau khi test xong
+            "/api/test/cloudinary/**", 
     };
 
     public static final String[] PRIVATE_GET_ENDPOINT = new String[] {
