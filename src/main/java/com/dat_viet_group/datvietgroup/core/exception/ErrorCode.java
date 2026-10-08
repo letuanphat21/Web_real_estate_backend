@@ -39,6 +39,7 @@ public enum ErrorCode {
     FILE_INVALID_TYPE(HttpStatus.BAD_REQUEST, "File không phải là ảnh hợp lệ"),
     FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "Dung lượng ảnh vượt quá giới hạn cho phép"),
     FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Upload ảnh lên Cloudinary thất bại"),
+    FILE_NOT_PDF(HttpStatus.BAD_REQUEST, "File phải là PDF"),
 
     // --- BÀI VIẾT (SOCIAL) ---
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bài viết"),
@@ -67,13 +68,32 @@ public enum ErrorCode {
     // --- DỰ ÁN (PROJECT) ---
     PROJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy dự án"),
     ZONE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy phân khu"),
+<<<<<<< Updated upstream
     PROPERTY_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bất động sản"),
     PROPERTY_CODE_EXISTED(HttpStatus.CONFLICT, "Mã bất động sản đã tồn tại trong phân khu này"),
     QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy câu hỏi");
+=======
+
+    // --- TUYỂN DỤNG (JOBS) ---
+    JOB_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy loại công việc"),
+    JOB_TYPE_IN_USE(HttpStatus.BAD_REQUEST, "Loại công việc đang được sử dụng, chỉ có thể ẩn chứ không thể xóa"),
+    JOB_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy tin tuyển dụng"),
+    JOB_NOT_OPEN(HttpStatus.BAD_REQUEST, "Tin tuyển dụng đã đóng hoặc hết hạn nhận hồ sơ"),
+    CV_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy CV"),
+    APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy đơn ứng tuyển"),
+    APPLICATION_EXISTED(HttpStatus.BAD_REQUEST, "Bạn đã nộp đơn vào vị trí này rồi"),
+    APPLICATION_CANNOT_WITHDRAW(HttpStatus.BAD_REQUEST, "Đơn đã được xử lý, không thể rút"),
+    APPLICATION_STATUS_UNCHANGED(HttpStatus.BAD_REQUEST, "Đơn đang ở trạng thái này rồi"),
+
+    // --- THÔNG BÁO (NOTIFICATION) ---
+    NOTIFICATION_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy loại thông báo"),
+    NOTIFICATION_TYPE_IN_USE(HttpStatus.BAD_REQUEST, "Loại thông báo đang được sử dụng, chỉ có thể ẩn chứ không thể xóa"),
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy thông báo"),
+    NOTIFICATION_NO_RECEIVER(HttpStatus.BAD_REQUEST, "Không có người nhận hợp lệ nào cho thông báo này");
+>>>>>>> Stashed changes
 
     private final HttpStatus status;
     private final String messageTemplate;
-
 
     /** Hàm format câu thông báo động cực hay của bạn */
     public String formatMessage(Object... args) {
@@ -82,7 +102,4 @@ public enum ErrorCode {
         }
         return MessageFormat.format(messageTemplate, args);
     }
-
-   
 }
-

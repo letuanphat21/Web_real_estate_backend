@@ -19,11 +19,14 @@ public class CreateNotificationRequest {
     private Long notificationTypeId;
 
     @NotBlank (message = "Tiêu đề không được để trống")
-    @Size(max = 255, message="Tiêu đề tối đa 225 ký tự")
+    @Size(max = 255, message="Tiêu đề tối đa 255 ký tự")
     private String title;
 
-    @NotBlank (message = "Nội dung không được để trùng")
+    @NotBlank (message = "Nội dung không được để trống")
     private String content;
+
+    @Size(max = 500, message = "Đường dẫn ảnh tối đa 500 ký tự")
+    private String image;
 
     private TargetType targetType;
 
