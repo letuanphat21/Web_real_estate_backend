@@ -1,6 +1,8 @@
 package com.dat_viet_group.datvietgroup.core.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,6 +33,19 @@ public class GlobalExceptionHandler {
         String errorMessage = ex.getFieldError() != null ? ex.getFieldError().getDefaultMessage()
                 : ErrorCode.INVALID_INPUT_FORMAT.getMessageTemplate();
         return ApiResponse.error(ErrorCode.INVALID_INPUT_FORMAT, errorMessage);
+    }
+
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        // Chi tiết parse chỉ ghi vào log, client chỉ thấy thông báo chung
+        log.warn("Request body không đọc được: {}", ex.getMessage());
+        return ApiResponse.error(ErrorCode.INVALID_INPUT_FORMAT);
+    }
+
+    @ExceptionHandler(value = DataIntegrityViolationException.class)
+    ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        log.warn("Vi phạm ràng buộc dữ liệu: {}", ex.getMessage());
+        return ApiResponse.error(ErrorCode.DATA_CONFLICT);
     }
 
     @ExceptionHandler(value = UsernameNotFoundException.class)

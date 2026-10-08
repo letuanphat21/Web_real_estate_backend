@@ -12,6 +12,11 @@ public class Endpoints {
             "/api/events/*",                    // chi tiết sự kiện (kèm ảnh, số người tham gia)
             "/api/events/*/members",            // danh sách thành viên tham gia
             "/api/events/*/comments",           // bình luận của sự kiện (phân trang)
+            // --- PROJECT ---
+            "/api/projects",                    // danh sách dự án (?page=&size=&sort=)
+            "/api/projects/*",                  // chi tiết dự án
+            "/api/zones",                       // danh sách phân khu (?projectId=&page=&size=)
+            "/api/zones/*",                     // chi tiết phân khu
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
