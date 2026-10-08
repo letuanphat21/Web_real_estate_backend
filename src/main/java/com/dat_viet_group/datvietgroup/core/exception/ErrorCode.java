@@ -43,7 +43,7 @@ public enum ErrorCode {
     POST_TOO_MANY_IMAGES(HttpStatus.BAD_REQUEST, "Số lượng ảnh vượt quá giới hạn cho phép"),
 
     // --- BÌNH LUẬN (SOCIAL) ---
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bình luận"),
+    // COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bình luận"),
     COMMENT_EMPTY(HttpStatus.BAD_REQUEST, "Nội dung bình luận không được để trống"),
     COMMENT_PARENT_INVALID(HttpStatus.BAD_REQUEST, "Bình luận cha không thuộc bài viết này"),
 
