@@ -37,16 +37,18 @@ public enum ErrorCode {
     FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "Dung lượng ảnh vượt quá giới hạn cho phép"),
     FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Upload ảnh lên Cloudinary thất bại"),
 
-    // --- SỰ KIỆN (EVENT) ---
-    EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy sự kiện"),
-    EVENT_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy ảnh của sự kiện"),
-    EVENT_INVALID_TIME(HttpStatus.BAD_REQUEST, "Thời gian kết thúc phải sau thời gian bắt đầu"),
-    EVENT_INVALID_MAX_ATTENDEES(HttpStatus.BAD_REQUEST, "Số người tối đa nhỏ hơn số người đã tham gia"),
-    EVENT_FULL(HttpStatus.BAD_REQUEST, "Sự kiện đã đủ số lượng người tham gia"),
-    EVENT_NOT_JOINABLE(HttpStatus.BAD_REQUEST, "Sự kiện đã kết thúc hoặc đã bị hủy"),
-    EVENT_ALREADY_JOINED(HttpStatus.BAD_REQUEST, "Bạn đã tham gia sự kiện này"),
-    EVENT_NOT_JOINED(HttpStatus.BAD_REQUEST, "Bạn chưa tham gia sự kiện này"),
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bình luận");
+    // --- BÀI VIẾT (SOCIAL) ---
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bài viết"),
+    POST_EMPTY(HttpStatus.BAD_REQUEST, "Bài viết phải có nội dung hoặc ít nhất 1 ảnh"),
+    POST_TOO_MANY_IMAGES(HttpStatus.BAD_REQUEST, "Số lượng ảnh vượt quá giới hạn cho phép"),
+
+    // --- BÌNH LUẬN (SOCIAL) ---
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bình luận"),
+    COMMENT_EMPTY(HttpStatus.BAD_REQUEST, "Nội dung bình luận không được để trống"),
+    COMMENT_PARENT_INVALID(HttpStatus.BAD_REQUEST, "Bình luận cha không thuộc bài viết này"),
+
+    // --- THEO DÕI (SOCIAL) ---
+    FOLLOW_SELF(HttpStatus.BAD_REQUEST, "Bạn không thể tự theo dõi chính mình");
 
     private final HttpStatus status;
     private final String messageTemplate;

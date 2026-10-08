@@ -21,7 +21,15 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_GET_ENDPOINT = new String[] {
-
+            "/api/posts",                       // danh sách bài viết
+            "/api/posts/*",                     // chi tiết bài viết
+            "/api/posts/*/reactions",           // tổng lượt thích + trạng thái thích của tôi
+            "/api/comments/post/*",             // bình luận gốc của bài viết
+            "/api/comments/*/replies",          // trả lời của một bình luận
+            // --- SOCIAL: FOLLOW ---
+            "/api/follows/*/followers",         // danh sách người theo dõi
+            "/api/follows/*/following",         // danh sách đang theo dõi
+            "/api/follows/*/stats",             // số follower/following + tôi có theo dõi không
     };
 
     public static final String[] PRIVATE_POST_ENDPOINT = new String[] {
@@ -30,11 +38,6 @@ public class Endpoints {
             "/api/comments",                    // bình luận / trả lời (JSON)
             // --- SOCIAL: FOLLOW ---
             "/api/follows/*",                   // theo dõi / bỏ theo dõi
-            // --- EVENT ---
-            "/api/events",                      // tạo sự kiện (form-data: title, content, location, maxAttendees, startTime, endTime, images)
-            "/api/events/*/images",             // thêm ảnh cho sự kiện (form-data: images) — người tạo / ADMIN
-            "/api/events/*/join",               // tham gia sự kiện
-            "/api/events/*/comments",           // bình luận sự kiện (JSON: content)
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINT = new String[] {

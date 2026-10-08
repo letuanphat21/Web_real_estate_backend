@@ -1,5 +1,7 @@
 package com.dat_viet_group.datvietgroup.modules.user.service;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +27,9 @@ public interface UserService extends UserDetailsService {
     User findByEmailOrPhone(String emailOrPhone);
 
     User findById(Long id);
+
+    /** Lấy nhiều user theo danh sách id trong một lần truy vấn (id không tồn tại sẽ bị bỏ qua). */
+    List<User> findAllByIds(Collection<Long> ids);
 
    
 }
