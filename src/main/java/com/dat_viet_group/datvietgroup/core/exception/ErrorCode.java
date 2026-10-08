@@ -15,6 +15,7 @@ public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "Lỗi hệ thống không xác định"),
     INVALID_KEY(HttpStatus.BAD_REQUEST, "Mã lỗi (ErrorCode) cấu hình không hợp lệ"),
     INVALID_INPUT_FORMAT(HttpStatus.BAD_REQUEST, "Dữ liệu đầu vào sai cấu trúc định dạng"),
+    DATA_CONFLICT(HttpStatus.CONFLICT, "Dữ liệu đang được liên kết với bản ghi khác, không thể thực hiện thao tác"),
 
     // --- XÁC THỰC & BẢO MẬT (AUTH / JWT) ---
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Bạn cần đăng nhập để thực hiện hành động này"),
@@ -59,7 +60,11 @@ public enum ErrorCode {
     EVENT_ALREADY_JOINED(HttpStatus.BAD_REQUEST, "Bạn đã tham gia sự kiện này"),
     EVENT_NOT_JOINED(HttpStatus.BAD_REQUEST, "Bạn chưa tham gia sự kiện này"),
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bình luận"),
-    EVENT_INVALID_MAX_ATTENDEES(HttpStatus.BAD_REQUEST, "Số người tối đa nhỏ hơn số người đã tham gia");
+    EVENT_INVALID_MAX_ATTENDEES(HttpStatus.BAD_REQUEST, "Số người tối đa nhỏ hơn số người đã tham gia"),
+
+    // --- DỰ ÁN (PROJECT) ---
+    PROJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy dự án"),
+    ZONE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy phân khu");
 
     private final HttpStatus status;
     private final String messageTemplate;
