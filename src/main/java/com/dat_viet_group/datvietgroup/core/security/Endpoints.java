@@ -7,16 +7,11 @@ public class Endpoints {
             "http://localhost:5173");
 
     public static final String[] PUBLIC_GET_ENDPOINTS = new String[] {
-<<<<<<< Updated upstream
-            "/api/events",  
-            "/api/events/**",
-=======
             // --- EVENT ---
             "/api/events",                      // danh sách sự kiện (?status=&keyword=&page=&size=&sort=)
             "/api/events/*",                    // chi tiết sự kiện (kèm ảnh, số người tham gia)
             "/api/events/*/members",            // danh sách thành viên tham gia
             "/api/events/*/comments",           // bình luận của sự kiện (phân trang)
->>>>>>> Stashed changes
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
