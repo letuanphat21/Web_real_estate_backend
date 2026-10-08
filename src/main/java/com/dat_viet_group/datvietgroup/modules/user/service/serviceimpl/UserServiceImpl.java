@@ -2,6 +2,8 @@ package com.dat_viet_group.datvietgroup.modules.user.service.serviceimpl;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -136,6 +138,10 @@ public class UserServiceImpl implements UserService {
     }
 
 
-   
-    
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> findAllByIds(Collection<Long> ids) {
+        return ids == null || ids.isEmpty() ? List.of() : userRepository.findAllById(ids);
+    }
+
 }
