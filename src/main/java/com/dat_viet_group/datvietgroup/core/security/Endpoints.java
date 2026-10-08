@@ -7,8 +7,16 @@ public class Endpoints {
             "http://localhost:5173");
 
     public static final String[] PUBLIC_GET_ENDPOINTS = new String[] {
+<<<<<<< Updated upstream
             "/api/events",  
             "/api/events/**",
+=======
+            // --- EVENT ---
+            "/api/events",                      // danh sách sự kiện (?status=&keyword=&page=&size=&sort=)
+            "/api/events/*",                    // chi tiết sự kiện (kèm ảnh, số người tham gia)
+            "/api/events/*/members",            // danh sách thành viên tham gia
+            "/api/events/*/comments",           // bình luận của sự kiện (phân trang)
+>>>>>>> Stashed changes
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
@@ -22,10 +30,30 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_POST_ENDPOINT = new String[] {
-                
+            "/api/posts",                       // đăng bài (form-data: content, images)
+            "/api/posts/*/reactions",           // thích / bỏ thích bài viết
+            "/api/comments",                    // bình luận / trả lời (JSON)
+            // --- SOCIAL: FOLLOW ---
+            "/api/follows/*",                   // theo dõi / bỏ theo dõi
+            // --- EVENT ---
+            "/api/events",                      // tạo sự kiện (form-data: title, content, location, maxAttendees, startTime, endTime, images)
+            "/api/events/*/images",             // thêm ảnh cho sự kiện (form-data: images) — người tạo / ADMIN
+            "/api/events/*/join",               // tham gia sự kiện
+            "/api/events/*/comments",           // bình luận sự kiện (JSON: content)
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINT = new String[] {
+            // --- EVENT ---
+            "/api/events/*",                    // sửa sự kiện (JSON) — người tạo / ADMIN
+            "/api/events/*/status",             // đổi trạng thái (JSON: status) — người tạo / ADMIN
+    };
+
+    public static final String[] PRIVATE_DELETE_ENDPOINT = new String[] {
+            // --- EVENT ---
+            "/api/events/*",                    // xóa sự kiện (kèm ảnh Cloudinary, thành viên, bình luận) — người tạo / ADMIN
+            "/api/events/*/images/*",           // xóa 1 ảnh — người tạo / ADMIN
+            "/api/events/*/join",               // rời sự kiện
+            "/api/events/*/comments/*",         // xóa mềm bình luận — người viết / ADMIN
     };
 
     public static final String[] ADMIN_PUT_ENDPOINTS = new String[] {
