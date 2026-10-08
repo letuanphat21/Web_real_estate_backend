@@ -7,5 +7,7 @@ public enum TargetType {
     APPLICATION,
     PROJECT,
     POST,
+    BOOKING,
+    PROPERTY,
     SYSTEM
 }

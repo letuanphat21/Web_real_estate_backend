@@ -2,6 +2,8 @@ package com.dat_viet_group.datvietgroup.modules.notification.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.SQLRestriction;
 import com.dat_viet_group.datvietgroup.modules.notification.enums.TargetType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,7 @@ import lombok.ToString;
 @Table(name = "notifications")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLRestriction("deleted_at IS NULL") // xóa mềm: truy vấn tự bỏ qua bản ghi đã xóa
 public class Notification {
 
     @Id
@@ -51,6 +54,9 @@ public class Notification {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

@@ -4,6 +4,8 @@ package com.dat_viet_group.datvietgroup.modules.Jobs.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +18,7 @@ import lombok.ToString;
 @Table(name = "cvs")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLRestriction("deleted_at IS NULL")
 public class Cv {
 
     @Id
@@ -35,6 +38,9 @@ public class Cv {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

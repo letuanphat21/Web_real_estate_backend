@@ -5,5 +5,6 @@ public enum ApplicationStatus {
     REVIEWING,    // Đang được HR xem xét
     INTERVIEWED,  // Đã phỏng vấn
     ACCEPTED,     // Chấp nhận ứng viên
-    REJECTED      // Từ chối ứng viên
+    REJECTED,     // Từ chối ứng viên
+    WITHDRAWN     // Ứng viên tự rút đơn
 }

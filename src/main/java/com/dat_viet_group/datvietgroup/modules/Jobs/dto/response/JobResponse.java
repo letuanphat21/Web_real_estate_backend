@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 import com.dat_viet_group.datvietgroup.modules.Jobs.enums.ExperienceLevel;
 import com.dat_viet_group.datvietgroup.modules.Jobs.enums.JobStatus;
-import com.dat_viet_group.datvietgroup.modules.Jobs.enums.JobType;
+import com.dat_viet_group.datvietgroup.modules.Jobs.enums.EmploymentType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +33,10 @@ public class JobResponse {
     private JobStatus status;
     private String statusLabel;             // "Đang tuyển"
 
-    private JobType type;
+    private Long jobTypeId;
+    private String jobTypeName;
+
+    private EmploymentType type;
     private String typeLabel;               // "Toàn thời gian"
 
     private ExperienceLevel experienceLevel;

@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.hibernate.annotations.SQLRestriction;
 
+import com.dat_viet_group.datvietgroup.modules.Jobs.enums.EmploymentType;
+import com.dat_viet_group.datvietgroup.modules.Jobs.enums.ExperienceLevel;
 import com.dat_viet_group.datvietgroup.modules.Jobs.enums.JobStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,6 +41,16 @@ public class Job {
     @JoinColumn(name = "job_type_id")
     private JobType jobType;
 
+    // Hình thức làm việc: FULL_TIME, PART_TIME...
+    @Enumerated(EnumType.STRING)
+    @Column(name = "employment_type", length = 30)
+    private EmploymentType employmentType;
+
+    // Cấp độ kinh nghiệm: FRESHER, JUNIOR...
+    @Enumerated(EnumType.STRING)
+    @Column(name = "experience_level", length = 30)
+    private ExperienceLevel experienceLevel;
+
     @Column(name = "title", length = 255)
     private String title;
 
@@ -68,6 +80,11 @@ public class Job {
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
+    // Vector nhúng phục vụ chatbot RAG (cùng kiểu với Property.vectorEmbedding). Chưa dùng ở module này.
+    @ToString.Exclude
+    @Column(name = "embedding", columnDefinition = "text")
+    private String embedding;
 
     @Column(name = "deadline")
     private LocalDate deadline;

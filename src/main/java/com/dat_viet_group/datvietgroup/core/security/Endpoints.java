@@ -12,6 +12,10 @@ public class Endpoints {
             "/api/events/*",                    // chi tiết sự kiện (kèm ảnh, số người tham gia)
             "/api/events/*/members",            // danh sách thành viên tham gia
             "/api/events/*/comments",           // bình luận của sự kiện (phân trang)
+            // --- JOBS ---
+            "/api/jobs",                        // danh sách tin tuyển dụng
+            "/api/jobs/*",                      // chi tiết tin tuyển dụng
+            "/api/job-types",                   // danh sách loại công việc đang hiện
             // --- PROJECT ---
             "/api/projects",                    // danh sách dự án (?page=&size=&sort=)
             "/api/projects/*",                  // chi tiết dự án
@@ -66,9 +70,22 @@ public class Endpoints {
     };
 
     public static final String[] ADMIN_PUT_ENDPOINTS = new String[] {
+            "/api/admin/**",
     };
 
     public static final String[] ADMIN_GET_ENDPOINTS = new String[] {
+            "/api/admin/**",
     };
 
+    public static final String[] ADMIN_POST_ENDPOINTS = new String[] {
+            "/api/admin/**",
+    };
+
+    public static final String[] ADMIN_PATCH_ENDPOINTS = new String[] {
+            "/api/admin/**",
+    };
+
+    public static final String[] ADMIN_DELETE_ENDPOINTS = new String[] {
+            "/api/admin/**",
+    };
 }
