@@ -64,7 +64,10 @@ public enum ErrorCode {
 
     // --- DỰ ÁN (PROJECT) ---
     PROJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy dự án"),
-    ZONE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy phân khu");
+    ZONE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy phân khu"),
+    PROPERTY_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bất động sản"),
+    PROPERTY_CODE_EXISTED(HttpStatus.CONFLICT, "Mã bất động sản đã tồn tại trong phân khu này"),
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy câu hỏi");
 
     private final HttpStatus status;
     private final String messageTemplate;

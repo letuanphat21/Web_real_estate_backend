@@ -4,16 +4,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dat_viet_group.datvietgroup.core.common.ApiResponse;
 import com.dat_viet_group.datvietgroup.modules.project.dto.request.ProjectRequest;
@@ -29,9 +32,12 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<ProjectResponse>> create(@Validated @RequestBody ProjectRequest request) {
-        return ApiResponse.created("Tạo dự án thành công", projectService.create(request));
+    /** form-data: các field của dự án + image (ảnh tổng quan, không bắt buộc) */
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<ProjectResponse>> create(
+            @Validated @ModelAttribute ProjectRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+        return ApiResponse.created("Tạo dự án thành công", projectService.create(request, image));
     }
 
     @GetMapping
@@ -45,10 +51,12 @@ public class ProjectController {
         return ApiResponse.ok("Lấy thông tin dự án thành công", projectService.getById(id));
     }
 
-    @PutMapping("/{id}")
+    /** form-data: gửi image mới thì thay ảnh cũ, không gửi thì giữ nguyên */
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<ProjectResponse>> update(@PathVariable Long id,
-            @Validated @RequestBody ProjectRequest request) {
-        return ApiResponse.ok("Cập nhật dự án thành công", projectService.update(id, request));
+            @Validated @ModelAttribute ProjectRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+        return ApiResponse.ok("Cập nhật dự án thành công", projectService.update(id, request, image));
     }
 
     @DeleteMapping("/{id}")

@@ -17,8 +17,6 @@ public class ProjectRequest {
     @NotBlank(message = "Tên dự án không được để trống")
     private String name;
 
-    private String overviewImage;
-
     private String location;
 
     private String investor;
