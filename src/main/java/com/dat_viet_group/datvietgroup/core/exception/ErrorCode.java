@@ -50,6 +50,17 @@ public enum ErrorCode {
     // --- THEO DÕI (SOCIAL) ---
     FOLLOW_SELF(HttpStatus.BAD_REQUEST, "Bạn không thể tự theo dõi chính mình");
 
+    // --- SỰ KIỆN (EVENT) ---
+    EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy sự kiện"),
+    EVENT_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy ảnh của sự kiện"),
+    EVENT_INVALID_TIME(HttpStatus.BAD_REQUEST, "Thời gian kết thúc phải sau thời gian bắt đầu"),
+    EVENT_FULL(HttpStatus.BAD_REQUEST, "Sự kiện đã đủ số lượng người tham gia"),
+    EVENT_NOT_JOINABLE(HttpStatus.BAD_REQUEST, "Sự kiện đã kết thúc hoặc đã bị hủy"),
+    EVENT_ALREADY_JOINED(HttpStatus.BAD_REQUEST, "Bạn đã tham gia sự kiện này"),
+    EVENT_NOT_JOINED(HttpStatus.BAD_REQUEST, "Bạn chưa tham gia sự kiện này"),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bình luận");
+    EVENT_INVALID_MAX_ATTENDEES(HttpStatus.BAD_REQUEST, "Số người tối đa nhỏ hơn số người đã tham gia"),
+
     private final HttpStatus status;
     private final String messageTemplate;
 
