@@ -68,11 +68,11 @@ public enum ErrorCode {
     // --- DỰ ÁN (PROJECT) ---
     PROJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy dự án"),
     ZONE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy phân khu"),
-<<<<<<< Updated upstream
+
     PROPERTY_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bất động sản"),
     PROPERTY_CODE_EXISTED(HttpStatus.CONFLICT, "Mã bất động sản đã tồn tại trong phân khu này"),
-    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy câu hỏi");
-=======
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy câu hỏi"),
+
 
     // --- TUYỂN DỤNG (JOBS) ---
     JOB_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy loại công việc"),
@@ -90,7 +90,7 @@ public enum ErrorCode {
     NOTIFICATION_TYPE_IN_USE(HttpStatus.BAD_REQUEST, "Loại thông báo đang được sử dụng, chỉ có thể ẩn chứ không thể xóa"),
     NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy thông báo"),
     NOTIFICATION_NO_RECEIVER(HttpStatus.BAD_REQUEST, "Không có người nhận hợp lệ nào cho thông báo này");
->>>>>>> Stashed changes
+
 
     private final HttpStatus status;
     private final String messageTemplate;
