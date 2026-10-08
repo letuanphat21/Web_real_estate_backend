@@ -7,12 +7,17 @@ public class Endpoints {
             "http://localhost:5173");
 
     public static final String[] PUBLIC_GET_ENDPOINTS = new String[] {
+            // --- EVENT ---
+            "/api/events",                      // danh sách sự kiện (?status=&keyword=&page=&size=&sort=)
+            "/api/events/*",                    // chi tiết sự kiện (kèm ảnh, số người tham gia)
+            "/api/events/*/members",            // danh sách thành viên tham gia
+            "/api/events/*/comments",           // bình luận của sự kiện (phân trang)
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
             "/api/users/register",
             "/api/users/login",
-            "/api/test/cloudinary/**",
+            "/api/test/cloudinary/**", 
     };
 
     public static final String[] PRIVATE_GET_ENDPOINT = new String[] {
@@ -36,6 +41,17 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINT = new String[] {
+            // --- EVENT ---
+            "/api/events/*",                    // sửa sự kiện (JSON) — người tạo / ADMIN
+            "/api/events/*/status",             // đổi trạng thái (JSON: status) — người tạo / ADMIN
+    };
+
+    public static final String[] PRIVATE_DELETE_ENDPOINT = new String[] {
+            // --- EVENT ---
+            "/api/events/*",                    // xóa sự kiện (kèm ảnh Cloudinary, thành viên, bình luận) — người tạo / ADMIN
+            "/api/events/*/images/*",           // xóa 1 ảnh — người tạo / ADMIN
+            "/api/events/*/join",               // rời sự kiện
+            "/api/events/*/comments/*",         // xóa mềm bình luận — người viết / ADMIN
     };
 
     public static final String[] ADMIN_PUT_ENDPOINTS = new String[] {
