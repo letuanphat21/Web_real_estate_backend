@@ -30,3 +30,7 @@ jwt:
     
 cloudinary:
   url: ${CLOUDINARY_URL}
+
+app:
+    cookie:
+        secure: ${COOKIE_SECURE:false}

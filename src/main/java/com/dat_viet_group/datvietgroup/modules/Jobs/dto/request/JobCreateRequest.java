@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.dat_viet_group.datvietgroup.modules.Jobs.enums.ExperienceLevel;
-import com.dat_viet_group.datvietgroup.modules.Jobs.enums.JobType;
+import com.dat_viet_group.datvietgroup.modules.Jobs.enums.EmploymentType;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -25,8 +25,11 @@ public class JobCreateRequest {
 
     private String description;
 
-    @NotNull(message = "Loại công việc không được để trống")
-    private JobType type;
+    // ID loại công việc trong bảng job_types (Kỹ thuật, Kinh doanh...)
+    private Long jobTypeId;
+
+    @NotNull(message = "Hình thức làm việc không được để trống")
+    private EmploymentType type;
 
     private ExperienceLevel experienceLevel;
 

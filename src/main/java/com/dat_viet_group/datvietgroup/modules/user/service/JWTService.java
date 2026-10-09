@@ -20,5 +20,10 @@ public interface JWTService {
 
     Long extractUserId(String token);
 
+    /** jti (id) của token, dùng để tra bảng refresh_token. */
+    String extractJti(String token);
+
     Boolean validateToken(String token, UserDetails userDetails);
+
+    boolean validateRefreshToken(String refreshToken, UserDetails userDetails);
 }

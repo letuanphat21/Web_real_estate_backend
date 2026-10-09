@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import com.dat_viet_group.datvietgroup.modules.Jobs.enums.ExperienceLevel;
 import com.dat_viet_group.datvietgroup.modules.Jobs.enums.JobStatus;
-import com.dat_viet_group.datvietgroup.modules.Jobs.enums.JobType;
+import com.dat_viet_group.datvietgroup.modules.Jobs.enums.EmploymentType;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -23,7 +23,9 @@ public class JobUpdateRequest {
 
     private String description;
 
-    private JobType type;
+    private Long jobTypeId;
+
+    private EmploymentType type;
 
     private ExperienceLevel experienceLevel;
 

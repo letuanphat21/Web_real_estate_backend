@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import com.dat_viet_group.datvietgroup.core.common.ApiResponse;
-
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +60,10 @@ public class GlobalExceptionHandler {
         return ApiResponse.error(ErrorCode.USER_NOT_FOUND, ex.getMessage());
     }
 
+    @ExceptionHandler(value = MaxUploadSizeExceededException.class)
+    ResponseEntity<ApiResponse<Void>> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
+        return ApiResponse.error(ErrorCode.FILE_TOO_LARGE);
+    }
     @ExceptionHandler(value = AuthenticationException.class)
     ResponseEntity<ApiResponse<Void>> handleAuthenticationException(AuthenticationException ex) {
         // Client chỉ thấy thông báo chung, nguyên nhân thật chỉ ghi vào log

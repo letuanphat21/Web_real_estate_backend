@@ -12,6 +12,10 @@ public class Endpoints {
             "/api/events/*",                    // chi tiết sự kiện (kèm ảnh, số người tham gia)
             "/api/events/*/members",            // danh sách thành viên tham gia
             "/api/events/*/comments",           // bình luận của sự kiện (phân trang)
+            // --- JOBS ---
+            "/api/jobs",                        // danh sách tin tuyển dụng
+            "/api/jobs/*",                      // chi tiết tin tuyển dụng
+            "/api/job-types",                   // danh sách loại công việc đang hiện
             // --- PROJECT ---
             "/api/projects",                    // danh sách dự án (?page=&size=&sort=)
             "/api/projects/*",                  // chi tiết dự án
@@ -26,12 +30,15 @@ public class Endpoints {
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {
             "/api/users/register",
             "/api/users/login",
+            "/api/users/refresh-token",
+            "/api/users/logout",
             "/api/test/cloudinary/**", 
     };
 
     public static final String[] PRIVATE_GET_ENDPOINT = new String[] {
+            "/api/users/me",                    // thông tin cá nhân của chính người đang đăng nhập
             "/api/posts",                       // danh sách bài viết
-            "/api/posts/*",                     // chi tiết bài viết
+            "/api/posts/*",                  // chi tiết bài viết
             "/api/posts/*/reactions",           // tổng lượt thích + trạng thái thích của tôi
             "/api/comments/post/*",             // bình luận gốc của bài viết
             "/api/comments/*/replies",          // trả lời của một bình luận
@@ -64,9 +71,22 @@ public class Endpoints {
     };
 
     public static final String[] ADMIN_PUT_ENDPOINTS = new String[] {
+            "/api/admin/**",
     };
 
     public static final String[] ADMIN_GET_ENDPOINTS = new String[] {
+            "/api/admin/**",
     };
 
+    public static final String[] ADMIN_POST_ENDPOINTS = new String[] {
+            "/api/admin/**",
+    };
+
+    public static final String[] ADMIN_PATCH_ENDPOINTS = new String[] {
+            "/api/admin/**",
+    };
+
+    public static final String[] ADMIN_DELETE_ENDPOINTS = new String[] {
+            "/api/admin/**",
+    };
 }
