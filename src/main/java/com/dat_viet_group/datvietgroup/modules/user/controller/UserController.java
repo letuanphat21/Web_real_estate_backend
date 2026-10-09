@@ -6,9 +6,11 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import com.dat_viet_group.datvietgroup.core.exception.ErrorCode;
 import com.dat_viet_group.datvietgroup.modules.user.dto.request.LoginRequest;
 import com.dat_viet_group.datvietgroup.modules.user.dto.request.RegisterRequest;
 import com.dat_viet_group.datvietgroup.modules.user.dto.response.JwtAuthResponse;
+import com.dat_viet_group.datvietgroup.modules.user.dto.response.UserInfoResponse;
 import com.dat_viet_group.datvietgroup.modules.user.entity.User;
 import com.dat_viet_group.datvietgroup.modules.user.service.JWTService;
 import com.dat_viet_group.datvietgroup.modules.user.service.RefreshTokenService;
@@ -111,6 +114,12 @@ public class UserController {
         addRefreshCookie(response, "", 0);
 
         return ApiResponse.ok("Đăng xuất thành công!");
+    }
+
+    // Không nhận id từ client: user được xác định bằng access token nên chỉ xem được thông tin của chính mình
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserInfoResponse>> getMyInfo(Authentication authentication) {
+        return ApiResponse.ok("Lấy thông tin cá nhân thành công!", userService.getMyInfo(authentication.getName()));
     }
 
     private void addRefreshCookie(HttpServletResponse response, String value, long maxAgeSeconds) {
