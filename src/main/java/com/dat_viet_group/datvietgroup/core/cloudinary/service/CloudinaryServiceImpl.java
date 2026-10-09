@@ -41,6 +41,8 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         }
     }
 
+    
+
     @Override
     public List<String> uploadImages(List<MultipartFile> files, String folder) {
         if (files == null || files.isEmpty()) {
@@ -117,7 +119,10 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         }
     }
 
-    /** https://res.cloudinary.com/<cloud>/image/upload/v123/folder/abc.jpg -> folder/abc */
+    /**
+     * https://res.cloudinary.com/<cloud>/image/upload/v123/folder/abc.jpg ->
+     * folder/abc
+     */
     private String extractPublicId(String url) {
         if (url == null || !url.contains("/upload/")) {
             return null;

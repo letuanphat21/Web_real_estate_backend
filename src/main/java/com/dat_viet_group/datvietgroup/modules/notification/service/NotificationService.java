@@ -26,6 +26,9 @@ public interface NotificationService {
     /** Xóa mềm thông báo; các bản ghi nhận của người dùng cũng được đánh dấu đã xóa. */
     void delete(Long id);
 
+    /** Đảo trạng thái ẩn/hiện của thông báo (ẩn thì người dùng không còn thấy). */
+    NotificationResponse toggle(Long id);
+
     // ===== Dùng nội bộ: module khác (Jobs, Events, Booking...) gọi hàm này =====
 
     /**
