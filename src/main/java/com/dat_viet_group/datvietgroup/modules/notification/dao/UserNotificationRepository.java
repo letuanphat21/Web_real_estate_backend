@@ -22,7 +22,7 @@ public interface UserNotificationRepository extends JpaRepository<UserNotificati
             + "where un.userId = :userId and un.isDeleted = false and t.isActive = true "
             + "order by n.createdAt desc, un.id desc",
             countQuery = "select count(un) from UserNotification un join un.notification n join n.notificationType t "
-                    + "where un.userId = :userId and un.isDeleted = true and t.isActive = true")
+                    + "where un.userId = :userId and un.isDeleted = false and t.isActive = true")
     Page<UserNotification> findMine(@Param("userId") Long userId, Pageable pageable);
 
     /** Như trên nhưng lọc theo loại thông báo (tab). */
