@@ -15,9 +15,12 @@ public interface CloudinaryService {
      */
     List<String> uploadImages(List<MultipartFile> files, String folder);
 
-    /** Xóa ảnh theo URL (bỏ qua nếu URL không thuộc Cloudinary). */
+    /** Upload 1 video (mp4/webm/mov, tối đa 20MB), trả về URL (https). */
+    String uploadVideo(MultipartFile file, String folder);
+
+    /** Xóa ảnh/video theo URL (bỏ qua nếu URL không thuộc Cloudinary). */
     void deleteByUrl(String url);
 
-    /** Xóa nhiều ảnh theo URL. */
+    /** Xóa nhiều ảnh/video theo URL. */
     void deleteByUrls(List<String> urls);
 }

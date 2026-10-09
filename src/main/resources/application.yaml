@@ -3,3 +3,8 @@ spring:
     name: datvietgroup
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
+  # Mặc định Spring chỉ cho 1MB/file → nâng lên để upload ảnh (10MB) và video (20MB)
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 130MB

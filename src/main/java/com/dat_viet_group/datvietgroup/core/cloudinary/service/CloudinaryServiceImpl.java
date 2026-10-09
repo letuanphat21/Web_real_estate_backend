@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CloudinaryServiceImpl implements CloudinaryService {
 
     private static final long MAX_FILE_SIZE = 10L * 1024 * 1024; // 10MB / ảnh
+    private static final long MAX_VIDEO_SIZE = 20L * 1024 * 1024; // 20MB / video
+    private static final Set<String> VIDEO_TYPES = Set.of("video/mp4", "video/webm", "video/quicktime");
 
     private final Cloudinary cloudinary;
 
@@ -59,15 +62,38 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     }
 
     @Override
+    public String uploadVideo(MultipartFile file, String folder) {
+        if (file == null || file.isEmpty()) {
+            throw new AppException(ErrorCode.FILE_EMPTY, "Chưa chọn video hoặc file rỗng");
+        }
+        if (file.getContentType() == null || !VIDEO_TYPES.contains(file.getContentType())) {
+            throw new AppException(ErrorCode.FILE_INVALID_TYPE, "Video chỉ hỗ trợ định dạng MP4, WEBM hoặc MOV");
+        }
+        if (file.getSize() > MAX_VIDEO_SIZE) {
+            throw new AppException(ErrorCode.FILE_TOO_LARGE, "Video tối đa 20MB");
+        }
+        try {
+            Map<?, ?> result = cloudinary.uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap("folder", folder, "resource_type", "video"));
+            return (String) result.get("secure_url");
+        } catch (IOException e) {
+            log.error("Upload video thất bại: {}", e.getMessage());
+            throw new AppException(ErrorCode.FILE_UPLOAD_FAILED, "Upload video lên Cloudinary thất bại");
+        }
+    }
+
+    @Override
     public void deleteByUrl(String url) {
         String publicId = extractPublicId(url);
         if (publicId == null) {
             return;
         }
+        // URL video có dạng .../video/upload/..., xóa phải đúng resource_type
+        String resourceType = url.contains("/video/upload/") ? "video" : "image";
         try {
-            cloudinary.uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "image"));
+            cloudinary.uploader().destroy(publicId, ObjectUtils.asMap("resource_type", resourceType));
         } catch (IOException e) {
-            log.warn("Xóa ảnh {} thất bại: {}", publicId, e.getMessage());
+            log.warn("Xóa file {} thất bại: {}", publicId, e.getMessage());
         }
     }
 

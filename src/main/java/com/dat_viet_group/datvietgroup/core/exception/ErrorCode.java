@@ -43,7 +43,7 @@ public enum ErrorCode {
 
     // --- BÀI VIẾT (SOCIAL) ---
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy bài viết"),
-    POST_EMPTY(HttpStatus.BAD_REQUEST, "Bài viết phải có nội dung hoặc ít nhất 1 ảnh"),
+    POST_EMPTY(HttpStatus.BAD_REQUEST, "Bài viết phải có nội dung, ảnh hoặc video"),
     POST_TOO_MANY_IMAGES(HttpStatus.BAD_REQUEST, "Số lượng ảnh vượt quá giới hạn cho phép"),
 
     // --- BÌNH LUẬN (SOCIAL) ---
