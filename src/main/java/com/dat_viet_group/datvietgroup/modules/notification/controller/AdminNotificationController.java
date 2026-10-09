@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,6 +57,11 @@ public class AdminNotificationController {
     public ResponseEntity<ApiResponse<NotificationResponse>> update(@PathVariable Long id,
             @Validated @RequestBody UpdateNotificationRequest request) {
         return ApiResponse.ok("Cập nhật thông báo thành công", notificationService.update(id, request));
+    }
+
+    @PatchMapping("/{id}/toggle")
+    public ResponseEntity<ApiResponse<NotificationResponse>> toggle(@PathVariable Long id) {
+        return ApiResponse.ok("Đổi trạng thái ẩn/hiện thành công", notificationService.toggle(id));
     }
 
     @DeleteMapping("/{id}")

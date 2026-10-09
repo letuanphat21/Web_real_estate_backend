@@ -28,5 +28,6 @@ public class NotificationResponse {
     private TargetType targetType;
     private Long targetId;
     private String actionUrl;
+    private Boolean isActive;
     private LocalDateTime createdAt;
 }

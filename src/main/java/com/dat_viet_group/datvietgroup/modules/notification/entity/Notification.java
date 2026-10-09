@@ -3,6 +3,7 @@ package com.dat_viet_group.datvietgroup.modules.notification.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLRestriction;
 import com.dat_viet_group.datvietgroup.modules.notification.enums.TargetType;
 import jakarta.persistence.*;
@@ -51,6 +52,11 @@ public class Notification {
 
     @Column(name = "action_url", length = 500)
     private String actionUrl;
+
+    // Admin ẩn/hiện: false thì người dùng không thấy thông báo này nữa
+    @ColumnDefault("true")
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

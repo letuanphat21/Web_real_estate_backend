@@ -127,6 +127,14 @@ public class NotificationServiceImpl implements NotificationService {
         userNotificationRepository.markDeletedByNotificationId(id);
     }
 
+    @Override
+    @Transactional
+    public NotificationResponse toggle(Long id) {
+        Notification notification = findOrThrow(id);
+        notification.setActive(!notification.isActive());
+        return toResponse(notificationRepository.save(notification));
+    }
+
     // ================= NỘI BỘ =================
 
     @Override
@@ -183,6 +191,7 @@ public class NotificationServiceImpl implements NotificationService {
         response.setTargetType(n.getTargetType());
         response.setTargetId(n.getTargetId());
         response.setActionUrl(n.getActionUrl());
+        response.setIsActive(n.isActive());
         response.setCreatedAt(n.getCreatedAt());
         return response;
     }
