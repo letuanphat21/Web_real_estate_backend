@@ -58,8 +58,7 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional(readOnly = true)
     public Page<EventResponse> getEvents(EventStatus status, String keyword, Pageable pageable) {
-        String kw = StringUtils.hasText(keyword) ? keyword.trim() : null;
-        return eventRepository.search(status, kw, pageable).map(this::toResponse);
+        return eventRepository.findAll(EventRepository.filter(status, keyword), pageable).map(this::toResponse);
     }
 
     @Override
