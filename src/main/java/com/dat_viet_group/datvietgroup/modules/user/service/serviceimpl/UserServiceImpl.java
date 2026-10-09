@@ -17,9 +17,8 @@ import com.dat_viet_group.datvietgroup.core.exception.AppException;
 import com.dat_viet_group.datvietgroup.core.exception.ErrorCode;
 import com.dat_viet_group.datvietgroup.modules.user.dao.RoleRepository;
 import com.dat_viet_group.datvietgroup.modules.user.dao.UserRepository;
-import com.dat_viet_group.datvietgroup.modules.user.dto.request.LoginRequest;
 import com.dat_viet_group.datvietgroup.modules.user.dto.request.RegisterRequest;
-import com.dat_viet_group.datvietgroup.modules.user.dto.response.JwtAuthResponse;
+import com.dat_viet_group.datvietgroup.modules.user.dto.response.UserInfoResponse;
 import com.dat_viet_group.datvietgroup.modules.user.entity.Role;
 import com.dat_viet_group.datvietgroup.modules.user.entity.User;
 import com.dat_viet_group.datvietgroup.modules.user.service.EmailService;
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserService {
         user.setFullName(request.getFullName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setActive(false);
-        user.setDeleted(false);
+        user.setDeleted(true);
         user.setActiveCode(generateOtp());
         user.setExpiredTime(expiredTime);
         user.setCreatedAt(LocalDateTime.now());
@@ -135,6 +134,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "Không tìm thấy người dùng với id: " + id));
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserInfoResponse getMyInfo(String principalName) {
+        User user = findByEmailOrPhone(principalName);
+        return new UserInfoResponse(user.getId(), user.getAvatarUrl(), user.getCreatedAt(),
+                user.getEmail(), user.getFullName(), user.getPhone());
     }
 
 
