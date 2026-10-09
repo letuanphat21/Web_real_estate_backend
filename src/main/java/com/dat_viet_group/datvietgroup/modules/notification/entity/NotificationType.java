@@ -3,6 +3,7 @@ package com.dat_viet_group.datvietgroup.modules.notification.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLRestriction;
 
 import jakarta.persistence.*;
@@ -28,7 +29,8 @@ public class NotificationType {
     @Column(name = "name", length = 100)
     private String name;
 
-    @Column(name = "is_active")
+    @ColumnDefault("true")
+    @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
     @Column(name = "created_at")
