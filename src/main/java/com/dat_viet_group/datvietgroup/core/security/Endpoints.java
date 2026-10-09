@@ -36,8 +36,9 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_GET_ENDPOINT = new String[] {
+            "/api/users/me",                    // thông tin cá nhân của chính người đang đăng nhập
             "/api/posts",                       // danh sách bài viết
-            "/api/posts/*",                     // chi tiết bài viết
+            "/api/posts/*",                  // chi tiết bài viết
             "/api/posts/*/reactions",           // tổng lượt thích + trạng thái thích của tôi
             "/api/comments/post/*",             // bình luận gốc của bài viết
             "/api/comments/*/replies",          // trả lời của một bình luận
