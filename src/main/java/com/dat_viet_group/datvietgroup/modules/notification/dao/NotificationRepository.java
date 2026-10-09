@@ -19,8 +19,11 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     boolean existsByNotificationTypeId(Long notificationTypeId);
 
     // Hai query dưới đây đọc bảng users qua entity "User" trong JPQL (không import entity vào module).
-    /** ID của mọi tài khoản đang hoạt động, dùng khi gửi thông báo cho tất cả. */
-    @Query("select u.id from User u where u.isActive = true and u.isDeleted = false")
+    /**
+     * ID của mọi tài khoản đang hoạt động, dùng khi gửi thông báo cho tất cả.
+     * Lưu ý quy ước của bảng users: is_deleted = true là tài khoản bình thường, false là bị admin khóa.
+     */
+    @Query("select u.id from User u where u.isActive = true and u.isDeleted = true")
     List<Long> findAllActiveUserIds();
 
     /** Lọc ra những ID thật sự tồn tại trong danh sách admin nhập. */
