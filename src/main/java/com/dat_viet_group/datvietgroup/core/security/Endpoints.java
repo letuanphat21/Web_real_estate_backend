@@ -25,6 +25,10 @@ public class Endpoints {
             "/api/properties/*",                // chi tiết bất động sản
             "/api/questions",                   // danh sách câu hỏi của dự án (?projectId=&page=&size=)
             "/api/questions/*",                 // chi tiết câu hỏi
+            // --- NEWS ---
+            "/api/news",                        // danh sách tin tức đang hiển thị (?categoryId=&projectId=&keyword=&page=&size=&sort=)
+            "/api/news/*",                      // chi tiết tin tức (kèm ảnh, danh mục, dự án, người đăng)
+            "/api/news-categories",             // danh mục tin tức đang hiển thị
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = new String[] {

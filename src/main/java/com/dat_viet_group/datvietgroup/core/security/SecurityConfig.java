@@ -16,12 +16,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.io.IOException;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.dat_viet_group.datvietgroup.modules.user.service.UserService;
 
@@ -60,20 +61,26 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
+                // 1. Cho qua trang lỗi nội bộ → không còn bị biến 403/404/500 thành 401
+                .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD).permitAll()
+                .requestMatchers("/error").permitAll()
 
+                // 2. Public
                 .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                 .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
 
+                // 3. ADMIN phải đặt TRƯỚC authenticated (giải thích bên dưới)
+                .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINTS).hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_POST_ENDPOINTS).hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, Endpoints.ADMIN_PUT_ENDPOINTS).hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, Endpoints.ADMIN_PATCH_ENDPOINTS).hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, Endpoints.ADMIN_DELETE_ENDPOINTS).hasRole("ADMIN")
+
+                // 4. Chỉ cần đăng nhập
                 .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_ENDPOINT).authenticated()
                 .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINT).authenticated()
                 .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINT).authenticated()
                 .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ENDPOINT).authenticated()
-
-                .requestMatchers(HttpMethod.PUT, Endpoints.ADMIN_PUT_ENDPOINTS).hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINTS).hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_POST_ENDPOINTS).hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PATCH, Endpoints.ADMIN_PATCH_ENDPOINTS).hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, Endpoints.ADMIN_DELETE_ENDPOINTS).hasRole("ADMIN")
                 .anyRequest().authenticated());
 
         // IF_REQUIRED: OAuth2 cần session tạm thời trong lúc redirect Google
@@ -95,12 +102,21 @@ public class SecurityConfig {
         //         )
         //         .successHandler(oAuth2SuccessHandler)
         //         .failureHandler(oAuth2FailureHandler));
-
+            
+                // Trả JSON trực tiếp theo format ApiResponse, không đi qua /error
         http.exceptionHandling(exception -> exception
-                .defaultAuthenticationEntryPointFor(
-                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
-                        PathPatternRequestMatcher.withDefaults().matcher("/api/**")));
+                .authenticationEntryPoint((req, res, e) ->
+                        writeError(res, HttpStatus.UNAUTHORIZED, "Bạn chưa đăng nhập hoặc phiên đăng nhập đã hết hạn"))
+                .accessDeniedHandler((req, res, e) ->
+                        writeError(res, HttpStatus.FORBIDDEN, "Bạn không có quyền thực hiện thao tác này")));
         return http.build();
+    }
+
+    private void writeError(HttpServletResponse response, HttpStatus status, String message) throws IOException {
+        response.setStatus(status.value());
+        response.setContentType("application/json");
+        String json = String.format("{\"success\":false,\"message\":\"%s\"}", message);
+        response.getWriter().write(json);
     }
 
     @Bean

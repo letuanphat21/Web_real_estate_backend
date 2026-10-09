@@ -89,7 +89,14 @@ public enum ErrorCode {
     NOTIFICATION_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy loại thông báo"),
     NOTIFICATION_TYPE_IN_USE(HttpStatus.BAD_REQUEST, "Loại thông báo đang được sử dụng, chỉ có thể ẩn chứ không thể xóa"),
     NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy thông báo"),
-    NOTIFICATION_NO_RECEIVER(HttpStatus.BAD_REQUEST, "Không có người nhận hợp lệ nào cho thông báo này");
+    NOTIFICATION_NO_RECEIVER(HttpStatus.BAD_REQUEST, "Không có người nhận hợp lệ nào cho thông báo này"),
+
+    // --- TIN TỨC (NEWS) ---
+    NEWS_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy tin tức"),
+    NEWS_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy ảnh của tin tức"),
+    CATEGORY_NEW_NOT_FOUND(HttpStatus.NOT_FOUND, "Không tìm thấy danh mục tin tức"),
+    CATEGORY_NEW_SLUG_EXISTED(HttpStatus.BAD_REQUEST, "Slug danh mục đã tồn tại"),
+    CATEGORY_NEW_IN_USE(HttpStatus.BAD_REQUEST, "Danh mục đang có tin tức, chỉ có thể ẩn chứ không thể xóa");
 
 
     private final HttpStatus status;

@@ -1,5 +1,7 @@
 package com.dat_viet_group.datvietgroup.modules.news.entity;
 
+import java.time.LocalDateTime;
+
 import com.dat_viet_group.datvietgroup.modules.project.entity.Project;
 import com.dat_viet_group.datvietgroup.modules.user.entity.User;
 
@@ -49,4 +51,10 @@ public class News {
 
     @Column (name = "active")
     private boolean active = true;
+
+    @Column (name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column (name = "updated_at")
+    private LocalDateTime updatedAt;
 }
