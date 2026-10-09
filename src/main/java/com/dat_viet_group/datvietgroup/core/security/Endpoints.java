@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Endpoints {
     public static final List<String> FRONT_END_HOSTS = List.of(
-            "http://localhost:5173");
+            "http://localhost:5173","https://web-real-estate-frontend.vercel.app/");
 
     public static final String[] PUBLIC_GET_ENDPOINTS = new String[] {
             // --- EVENT ---
