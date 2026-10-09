@@ -2,6 +2,11 @@ package com.dat_viet_group.datvietgroup.modules.social.service.serviceimpl;
 
 import com.dat_viet_group.datvietgroup.modules.social.service.CommentService;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.ToLongFunction;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +18,12 @@ import com.dat_viet_group.datvietgroup.core.exception.AppException;
 import com.dat_viet_group.datvietgroup.core.exception.ErrorCode;
 import com.dat_viet_group.datvietgroup.modules.social.dao.CommentRepository;
 import com.dat_viet_group.datvietgroup.modules.social.dao.PostRepository;
+import com.dat_viet_group.datvietgroup.modules.social.dto.mapper.CommentMapper;
 import com.dat_viet_group.datvietgroup.modules.social.dto.request.CommentCreateRequest;
 import com.dat_viet_group.datvietgroup.modules.social.dto.response.CommentResponse;
 import com.dat_viet_group.datvietgroup.modules.social.entity.Comment;
 import com.dat_viet_group.datvietgroup.modules.social.entity.Post;
+import com.dat_viet_group.datvietgroup.modules.user.entity.User;
 import com.dat_viet_group.datvietgroup.modules.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserService userService;
+    private final CommentMapper commentMapper;
 
     @Override
     @Transactional
@@ -61,15 +69,17 @@ public class CommentServiceImpl implements CommentService {
             }
         }
 
+        User author = userService.findByEmailOrPhone(emailOrPhone);
+
         Comment comment = new Comment();
         comment.setContent(request.getContent().trim());
-        comment.setUserId(userService.findByEmailOrPhone(emailOrPhone).getId());
+        comment.setUserId(author.getId());
         comment.setPost(post);
         comment.setParentComment(parent);
         comment.setActive(true);
         comment.setCreatedAt(LocalDateTime.now());
 
-        return toResponse(commentRepository.save(comment), 0);
+        return commentMapper.toResponse(commentRepository.save(comment), author, 0);
     }
 
     @Override
@@ -78,8 +88,8 @@ public class CommentServiceImpl implements CommentService {
         postRepository.findById(postId)
                 .filter(Post::isActive)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
-        return commentRepository.findRootComments(postId, pageable)
-                .map(c -> toResponse(c, commentRepository.countReplies(c.getId())));
+        return toPage(commentRepository.findRootComments(postId, pageable),
+                c -> commentRepository.countReplies(c.getId()));
     }
 
     @Override
@@ -88,18 +98,14 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.findById(commentId)
                 .filter(Comment::isActive)
                 .orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND));
-        return commentRepository.findReplies(commentId, pageable).map(c -> toResponse(c, 0));
+        return toPage(commentRepository.findReplies(commentId, pageable), c -> 0);
     }
 
-    private CommentResponse toResponse(Comment comment, long replyCount) {
-        return CommentResponse.builder()
-                .id(comment.getId())
-                .postId(comment.getPost().getId())
-                .parentId(comment.getParentComment() == null ? null : comment.getParentComment().getId())
-                .userId(comment.getUserId())
-                .content(comment.getContent())
-                .replyCount(replyCount)
-                .createdAt(comment.getCreatedAt())
-                .build();
+    /** Lấy người viết của cả trang trong 1 truy vấn rồi map, tránh gọi DB từng dòng. */
+    private Page<CommentResponse> toPage(Page<Comment> page, ToLongFunction<Comment> replyCount) {
+        Set<Long> userIds = page.getContent().stream().map(Comment::getUserId).collect(Collectors.toSet());
+        Map<Long, User> users = userService.findAllByIds(userIds).stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
+        return page.map(c -> commentMapper.toResponse(c, users.get(c.getUserId()), replyCount.applyAsLong(c)));
     }
 }

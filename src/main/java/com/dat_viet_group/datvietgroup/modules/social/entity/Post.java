@@ -33,6 +33,9 @@ public class Post {
         @Column(name = "content", length = 1000)
         private String content;
 
+        @Column(name = "video_url")
+        private String videoUrl;
+
         @Column(name = "created_at")
         private LocalDateTime createdAt;
 

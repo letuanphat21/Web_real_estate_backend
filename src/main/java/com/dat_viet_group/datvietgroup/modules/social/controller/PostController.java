@@ -30,13 +30,17 @@ public class PostController {
 
     private final PostService postService;
 
-    /** form-data: content (Text, tùy chọn), images (File, chọn nhiều, tùy chọn) — cần ít nhất 1 trong 2 */
+    /**
+     * form-data: content (Text), images (File, chọn nhiều), video (File, 1 video ≤ 20MB) — đều tùy chọn
+     * nhưng cần ít nhất 1 trong 3
+     */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<PostResponse>> createPost(
             Authentication authentication,
             @RequestParam(value = "content", required = false) String content,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images) {
-        PostResponse post = postService.createPost(authentication.getName(), content, images);
+            @RequestPart(value = "images", required = false) List<MultipartFile> images,
+            @RequestPart(value = "video", required = false) MultipartFile video) {
+        PostResponse post = postService.createPost(authentication.getName(), content, images, video);
         return ApiResponse.created("Đăng bài thành công", post);
     }
 

@@ -17,8 +17,9 @@ import lombok.Setter;
 public class PostResponse {
 
     private long id;
-    private Long userId;
+    private AuthorResponse author;
     private String content;
     private List<String> imageUrls;
+    private String videoUrl;
     private LocalDateTime createdAt;
 }

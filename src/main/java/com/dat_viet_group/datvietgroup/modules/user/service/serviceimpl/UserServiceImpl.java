@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
     public UserInfoResponse getMyInfo(String principalName) {
         User user = findByEmailOrPhone(principalName);
         return new UserInfoResponse(user.getId(), user.getAvatarUrl(), user.getCreatedAt(),
-                user.getEmail(), user.getFullName(), user.getPhone());
+                user.getEmail(), user.getFullName(), user.getPhone(), user.getRole().getName());
     }
 
 

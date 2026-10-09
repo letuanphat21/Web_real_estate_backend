@@ -11,7 +11,7 @@ import com.dat_viet_group.datvietgroup.modules.social.dto.response.PostResponse;
 public interface PostService {
 
     /** Đăng bài: content (có thể rỗng nếu có ảnh) + danh sách ảnh (có thể rỗng nếu có content). */
-    PostResponse createPost(String emailOrPhone, String content, List<MultipartFile> images);
+    PostResponse createPost(String emailOrPhone, String content, List<MultipartFile> images, MultipartFile video);
 
     PostResponse getPost(long id);
 
